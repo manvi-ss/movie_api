@@ -14,8 +14,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
 const Movies = Models.Movie;
 const Users = Models.User;
+
+
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/myFlixDB', {useNewUrlParser:true, useUnifiedTopology:true});
@@ -178,7 +184,7 @@ let movies = [
 ];
 
 //Creating GET(http)Request at endpoint "/movies" returning JSON objects(return all movies)(CRUD: READ)
-app.get('/movies', (req,res) => {
+app.get('/movies', passport.authenticate('jwt',{ session: false}), (req,res) => {
     Movies.find()
     .then((movies) => {
         res.status(201).json(movies); 
@@ -190,7 +196,7 @@ app.get('/movies', (req,res) => {
 });
 
 // Creating GET route at endpoint "/users" returning JSON object (Returns all users)(CRUD: READ)
-app.get('/users', (req, res) => {
+app.get('/users',passport.authenticate('jwt',{ session: false}),  (req, res) => {
     Users.find()
     .then((users) => {
         res.status(201).json(users);
@@ -202,7 +208,7 @@ app.get('/users', (req, res) => {
 });
 
 //Creating GET(http)Request at endpoint "/movies/:Title" (get movies by title (CRUD: READ))
-app.get('/movies/:Title', (req,res) => {
+app.get('/movies/:Title', passport.authenticate('jwt',{ session: false}),(req,res) => {
     Movies.findOne({Title: req.params.Title})
     .then((movies)=> {
         res.json(movies)
@@ -214,7 +220,7 @@ app.get('/movies/:Title', (req,res) => {
 });
 
 //Creating GET(http)Request/Route at endpoint (returnsJson object of Genre name and description (CRUD: READ))
-app.get('/movies/genres/:genreName', (req,res) => {
+app.get('/movies/genres/:genreName',passport.authenticate('jwt',{ session: false}), (req,res) => {
     Movies.findOne({ 'Genre.Name' : req.params.genreName})
     .then((movies) => {
         res.status(200).json(movies.Genre);
@@ -226,7 +232,7 @@ app.get('/movies/genres/:genreName', (req,res) => {
 });
 
 //Creating GET(http)Request/Route returns Json object of details of Director (CRUD: READ)
-app.get('/movies/directors/:directorName', (req,res) => {
+app.get('/movies/directors/:directorName', passport.authenticate('jwt',{ session: false}), (req,res) => {
     Movies.findOne({ 'Director.Name' : req.params.directorName})
     .then((movies) => {
         res.status(200).json(movies.Director);
@@ -238,7 +244,7 @@ app.get('/movies/directors/:directorName', (req,res) => {
 });
 
 //Creating GET(http)Request at endpoint "/users/:Username" (get user by Username (CRUD: READ))
-app.get('/users/:Username', (req,res) => {
+app.get('/users/:Username', passport.authenticate('jwt',{ session: false}), (req,res) => {
     Users.findOne({Username: req.params.Username})
     .then((users) =>{
         res.json(users);
@@ -262,7 +268,7 @@ app.post('/users',(req,res) => {
                 Email: req.body.Email,
                 Birthday: req.body.Birthday
             })
-            .then((user) => {res.status(201).json(user);
+            .then((user) => {res.status(201).json({Username: user.Username, Email: user.Email});
             
             })
             .catch((error) => {
@@ -279,7 +285,7 @@ app.post('/users',(req,res) => {
     
 
 //Allow users to UPDATE(CRUD)/[HTTP: PUT] their user info(username)
-app.put('/users/:Username',(req,res) => {
+app.put('/users/:Username', (req,res) => {
     Users.findOneAndUpdate({ Username: req.params.Username}, 
         {$set: 
         {
@@ -350,7 +356,7 @@ app.delete('/users/:Username/movies/:MovieID',(req,res) => {
 
 //Allow users to deregister [DELETE]
 //Delete a user by Username
-app.delete('/users/:Username', (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt',{ session: false}), (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username})
     .then((user)=> {
         if(!user){
