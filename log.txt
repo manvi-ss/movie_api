@@ -16,3 +16,5 @@
 ::1 - - [04/Jul/2023:11:57:00 +0000] "GET /movies/director/James%20Cameron HTTP/1.1" 404 170 "-" "PostmanRuntime/7.32.3"
 ::1 - - [04/Jul/2023:11:59:03 +0000] "GET /movies/director/James%20Cameron HTTP/1.1" 404 170 "-" "PostmanRuntime/7.32.3"
 ::1 - - [04/Jul/2023:14:18:02 +0000] "POST /movies HTTP/1.1" 404 146 "-" "PostmanRuntime/7.32.3"
+::1 - - [07/Jul/2023:15:04:03 +0000] "POST /users/confusedplatypus?Username=confusedplatypus&Password=platypus HTTP/1.1" 404 162 "-" "PostmanRuntime/7.32.3"
+::1 - - [07/Jul/2023:16:35:53 +0000] "POST /movies HTTP/1.1" 404 146 "-" "PostmanRuntime/7.32.3"
