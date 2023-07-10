@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MovieFlix</title>
+    <link rel="stylesheet" href="../style/styles.css">
 </head>
 <body>
     <div>
-        <p>This Web Application will provide users with access to information about different
-            movies, directors, and genres. Users will be able to sign up, update their
-            personal information, and create a list of their favorite movies.
+        <h1>Movie Flix API Documentation </h1>
+        <p>This Web Application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.
         </p>
     </div>
     <br>
@@ -28,7 +28,7 @@
 
         <tbody>
             <tr>
-                <td>Returns a list of movies</td>
+                <td>Get a list of movies</td>
                 <td>/movies</td>
                 <td>GET</td>
                 <td>-</td>
@@ -36,7 +36,7 @@
                 <td>A JSON object holding data about all the movies</td>
             </tr>
             <tr>
-                <td>Returns a list of Users</td>
+                <td>Get a list of all Users</td>
                 <td>/users</td>
                 <td>GET</td>
                 <td>-</td>
@@ -44,7 +44,7 @@
                 <td>A JSON object holding data about all the users</td>
             </tr>
             <tr>
-                <td>Returns data about movie by title</td>
+                <td>Get data about movie by title</td>
                 <td>/movies/:Title</td>
                 <td>GET</td>
                 <td>:Title</td>
@@ -52,7 +52,7 @@
                 <td>A JSON object holding data about all the users</td>
             </tr>
             <tr>
-                <td>Returns data about a genre by genre name</td>
+                <td>Get data about a genre by genre name</td>
                 <td>/movies/genres/:genreName</td>
                 <td>GET</td>
                 <td>:genreName</td>
@@ -60,7 +60,7 @@
                 <td>A JSON object holding data about genre.</td>
             </tr>
             <tr>
-                <td>Returns data about a diector by name</td>
+                <td>Get data about a diector by name</td>
                 <td>/movies/directors/:directorName</td>
                 <td>GET</td>
                 <td>:directorName eg. James%20Cameron</td>
@@ -69,7 +69,7 @@
             </tr>
 
             <tr>
-                <td>Returns data about a User by Username</td>
+                <td>Get data about a User by Username</td>
                 <td>/users/:Username</td>
                 <td>GET</td>
                 <td>:Username</td>
