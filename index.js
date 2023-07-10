@@ -107,7 +107,7 @@ app.get('/users/:Username', passport.authenticate('jwt',{ session: false}), (req
 });
 
 //Allow new users to register POST(http)/ (CRUD: CREATE)
-app.post('/users',
+app.post('/user',
 [
     check('Username','Username is required').isLength({min:5}),//minimum value of 5 characters are allowed
     check('Username','Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -186,7 +186,7 @@ passport.authenticate('jwt',{ session: false}),
 
 //Allow users to add movies to their favorites list and send text as ADDED [CREATE][POST]
 //Add a movie to a user's list of Favorites
-app.post('/user/:Username/movies/:MovieID',(req,res) => {
+app.post('/users/:Username/movies/:MovieID',(req,res) => {
     Users.findOneAndUpdate({ Username: req.params.Username},
         {
             $addToSet:{ FavoriteMovies: req.params.MovieID }
