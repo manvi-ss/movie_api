@@ -107,7 +107,7 @@ app.get('/users/:Username', passport.authenticate('jwt',{ session: false}), (req
 });
 
 //Allow new users to register POST(http)/ (CRUD: CREATE)
-app.post('/user',
+app.post('/users',
 [
     check('Username','Username is required').isLength({min:5}),//minimum value of 5 characters are allowed
     check('Username','Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
