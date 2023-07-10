@@ -114,6 +114,20 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt',{ session
     });
 });
 
+app.get('/movies/directors/:directorName/movies', passport.authenticate('jwt',{ session: false}), (req,res) => {
+    Movies.find({ 'Director.Name' : req.params.directorName}).select('Title')
+    .then((movieTitle) => {
+        if(movieTitle.length === 0){
+            return res.status(400).send('No movies found')
+        }
+        res.status(200).json(movieTitle);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
 //Creating GET(http)Request at endpoint "/users/:Username" (get user by Username (CRUD: READ))
 app.get('/users/:Username', passport.authenticate('jwt',{ session: false}), (req,res) => {
     Users.findOne({Username: req.params.Username})
