@@ -186,7 +186,7 @@ passport.authenticate('jwt',{ session: false}),
 
 //Allow users to add movies to their favorites list and send text as ADDED [CREATE][POST]
 //Add a movie to a user's list of Favorites
-app.post('/users/:Username/movies/:MovieID',(req,res) => {
+app.post('/user/:Username/movies/:MovieID',(req,res) => {
     Users.findOneAndUpdate({ Username: req.params.Username},
         {
             $addToSet:{ FavoriteMovies: req.params.MovieID }
