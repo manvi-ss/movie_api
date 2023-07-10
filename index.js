@@ -132,7 +132,10 @@ app.get('/movies/directors/:directorName/movies', passport.authenticate('jwt',{ 
 app.get('/users/:Username', passport.authenticate('jwt',{ session: false}), (req,res) => {
     Users.findOne({Username: req.params.Username})
     .then((users) =>{
-        res.json(users);
+        if(!users){
+            return res.status(400).send('No user found')
+        }
+        res.json({Username:users.Username});
     })
     .catch((err) => {
         console.error(err);
