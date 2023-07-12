@@ -224,7 +224,7 @@ passport.authenticate('jwt',{ session: false}),
 //Allow users to add movies to their favorites list and send text as ADDED [CREATE][POST]
 //Add a movie to a user's list of Favorites
 app.post('/users/:Username/movies/:MovieID',(req,res) =>{
-    Movies.find({'_id': req.params.MovieID}).select(_id)
+    Movies.find({'MovieID': req.params.MovieID})
     .then((MovieID) => {
         if(!MovieID){
             return res.status(400).send('No movies found!')
@@ -240,7 +240,7 @@ app.post('/users/:Username/movies/:MovieID',(req,res) =>{
                 if (!updatedUser) {
                     return res.status(404).send("Error: User does not exist");
                 } else{
-                    res.status(201).json(updatedUser);
+                    res.status(201).send('movieid' + req.params.MovieID).json(updatedUser);
                 } 
             })
             .catch((error) => {
