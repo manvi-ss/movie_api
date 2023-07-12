@@ -299,7 +299,7 @@ app.get('/',(req,res) => {
 });
 
 app.get('/documentation',(req,res) => {
-    res.sendFile(__dirname+ 'public/documentation.html');
+    res.sendFile('public/documentation.html', {root: __dirname});
 });
 
 // for serving static files in public folder
