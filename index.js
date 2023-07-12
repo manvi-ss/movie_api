@@ -226,7 +226,7 @@ passport.authenticate('jwt',{ session: false}),
 app.post('/users/:Username/movies/:MovieID',(req,res) =>{
     Movies.find({'MovieID': req.params.MovieID})
     .then((MovieID) => {
-        if(!MovieID){
+        if(!MovieID || MovieID === null){
             return res.status(400).send('No movies found!')
         } 
         else {
