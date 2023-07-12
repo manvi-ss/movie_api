@@ -298,7 +298,7 @@ app.get('/',(req,res) => {
     res.send('Welcome to MovieFlix!!');
 });
 
-app.get('/doc',(req,res) => {
+app.get('/documentation',(req,res) => {
     res.sendFile('public/documentation.html', {root: __dirname});
 });
 
