@@ -40,7 +40,7 @@ mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser:true, useUnifiedTo
 app.get('/movies', passport.authenticate('jwt',{ session: false}), (req,res) => {
     Movies.find()
     .then((movies) => {
-        res.status(201).json(movies); 
+        res.status(200).json(movies); 
     })
     .catch((err) => {
         console.error(err);
@@ -52,7 +52,7 @@ app.get('/movies', passport.authenticate('jwt',{ session: false}), (req,res) => 
 app.get('/users',passport.authenticate('jwt',{ session: false}),  (req, res) => {
     Users.find()
     .then((users) => {
-        res.status(201).json(users);
+        res.status(200).json(users);
     })
     .catch((err) => {
         console.error(err);
@@ -158,7 +158,7 @@ app.post('/users',
         return res.status(422).json({errors:errors.array()});
     }
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
+    const hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({ Username: req.body.Username }) //Search to see if a user with the requested username already exists
     .then((user) => {
         if(user){ // If the user is found , send a esponse that it alreday exists
@@ -196,11 +196,12 @@ passport.authenticate('jwt',{ session: false}),
     check('Email','Email does not appear to be valid.').isEmail()
 ],
 (req,res) => {
+    const hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOneAndUpdate({ Username: req.params.Username}, 
         {$set: 
         {
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
         }
@@ -211,7 +212,7 @@ passport.authenticate('jwt',{ session: false}),
         if (!updatedUser) {
             return res.status(404).send("Error: User does not exist");
         } else{
-            res.json(updatedUser);
+            res.status(201).json(updatedUser);
         }
     })
     .catch((error) => {
@@ -220,21 +221,32 @@ passport.authenticate('jwt',{ session: false}),
     });
 });
     
-
 //Allow users to add movies to their favorites list and send text as ADDED [CREATE][POST]
 //Add a movie to a user's list of Favorites
-app.post('/users/:Username/movies/:MovieID',(req,res) => {
-    Users.findOneAndUpdate({ Username: req.params.Username},
-        {
-            $addToSet:{ FavoriteMovies: req.params.MovieID }
-        },
-        {new : true} //This line make sure the updated document is returned
-    )
-    .then((updatedUser) => {
-        if (!updatedUser) {
-            return res.status(404).send("Error: User does not exist");
-        } else{
-            res.json(updatedUser);
+app.post('/users/:Username/movies/:MovieID',(req,res) =>{
+    Movies.find({'MovieId': req.params.MovieID})
+    .then((MovieId) => {
+        if(!MovieId){
+            return res.status(400).send('No movies found!')
+        } 
+        else {
+            Users.findOneAndUpdate({ Username: req.params.Username},
+                {
+                    $addToSet:{ FavoriteMovies: req.params.MovieID }
+                },
+                {new : true} //This line make sure the updated document is returned
+            )
+            .then((updatedUser) => {
+                if (!updatedUser) {
+                    return res.status(404).send("Error: User does not exist");
+                } else{
+                    res.status(201).json(updatedUser);
+                } 
+            })
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send('Error' + error);
+            });
         }
     })
     .catch((error) => {
@@ -272,7 +284,7 @@ app.delete('/users/:Username', passport.authenticate('jwt',{ session: false}), (
         if(!user){
             res.status(400).send(req.params.Username + 'was not found');
         }else {
-            res.status(200).send(req.params.Username + 'was deleted.');
+            res.status(204).send(req.params.Username + 'was deleted.');
         }
     }) .catch((err) => {
         console.error(err);
