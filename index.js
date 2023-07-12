@@ -224,7 +224,7 @@ passport.authenticate('jwt',{ session: false}),
 //Allow users to add movies to their favorites list and send text as ADDED [CREATE][POST]
 //Add a movie to a user's list of Favorites
 app.post('/users/:Username/movies/:MovieID',(req,res) =>{
-    Movies.find({'MovieID': req.params.MovieID})
+    Movies.find({'MovieID': req.params.MovieID}).select(_id)
     .then((MovieID) => {
         if(!MovieID){
             return res.status(400).send('No movies found!')
