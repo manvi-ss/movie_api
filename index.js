@@ -303,7 +303,7 @@ app.get('/doc',(req,res) => {
 });
 
 // for serving static files in public folder
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 //create a write stream in append mode. a log.txt file is in root directory
 const accessLogStream = fs.createWriteStream(path.join(__dirname,'log.txt'), {flags: 'a'})
