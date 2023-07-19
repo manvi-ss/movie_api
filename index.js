@@ -107,7 +107,7 @@ app.get("/movies/genres/:genreName/movies", (req, res) => {
 });
 
 //Creating GET(http)Request/Route returns Json object of details of Director (CRUD: READ)
-app.get("/movies/directors/:directorName/movies", (req, res) => {
+app.get("/movies/directors/:directorName",, (req, res) => {
   Movies.findOne({ "Director.Name": req.params.directorName })
     .then((movies) => {
       res.status(200).json(movies.Director);
@@ -119,7 +119,7 @@ app.get("/movies/directors/:directorName/movies", (req, res) => {
 });
 
 //return details about director
-app.get("/movies/directors/:directorName", (req, res) => {
+app.get("/movies/directors/:directorName/movies", (req, res) => {
   Movies.find({ "Director.Name": req.params.directorName })
     .select("Title")
     .then((movieTitle) => {
