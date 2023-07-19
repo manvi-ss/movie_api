@@ -118,6 +118,7 @@ app.get("/movies/directors/:directorName/movies", (req, res) => {
     });
 });
 
+//return details about director
 app.get("/movies/directors/:directorName", (req, res) => {
   Movies.find({ "Director.Name": req.params.directorName })
     .select("Title")
