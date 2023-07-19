@@ -36,20 +36,16 @@ mongoose
   .catch((error) => console.log("Error message:", error.message));
 
 //Creating GET(http)Request at endpoint "/movies" returning JSON objects(return all movies)(CRUD: READ)
-app.get(
-  "/movies",
-
-  (req, res) => {
-    Movies.find()
-      .then((movies) => {
-        res.status(200).json(movies);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error " + err);
-      });
-  }
-);
+app.get("/movies", (req, res) => {
+  Movies.find()
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error " + err);
+    });
+});
 
 // Creating GET route at endpoint "/users" returning JSON object (Returns all users)(CRUD: READ)
 app.get(
@@ -68,62 +64,50 @@ app.get(
 );
 
 //Creating GET(http)Request at endpoint "/movies/:Title" (get movies by title (CRUD: READ))
-app.get(
-  "/movies/:Title",
-
-  (req, res) => {
-    Movies.findOne({ Title: req.params.Title })
-      .then((movies) => {
-        if (movies) {
-          res.json(movies);
-          return;
-        }
-        res.status(404).send("No movie found with that title");
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
+app.get("/movies/:Title", (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+    .then((movies) => {
+      if (movies) {
+        res.json(movies);
+        return;
+      }
+      res.status(404).send("No movie found with that title");
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
 
 //Creating GET(http)Request/Route at endpoint (returnsJson object of Genre name and description (CRUD: READ))
-app.get(
-  "/movies/genres/:genreName",
-
-  (req, res) => {
-    Movies.findOne({ "Genre.Name": req.params.genreName })
-      .then((movies) => {
-        res.status(200).json(movies.Genre);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
+app.get("/movies/genres/:genreName", (req, res) => {
+  Movies.findOne({ "Genre.Name": req.params.genreName })
+    .then((movies) => {
+      res.status(200).json(movies.Genre);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
 //return a list of movies by genre
-app.get(
-  "/movies/genres/:genreName/movies",
-
-  (req, res) => {
-    Movies.find({ "Genre.Name": req.params.genreName })
-      .select("Title")
-      .then((movieTitle) => {
-        if (movieTitle.length === 0) {
-          return res.status(404).send("Genre not found");
-        }
-        res.status(200).json(movieTitle);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
+app.get("/movies/genres/:genreName/movies", (req, res) => {
+  Movies.find({ "Genre.Name": req.params.genreName })
+    .select("Title")
+    .then((movieTitle) => {
+      if (movieTitle.length === 0) {
+        return res.status(404).send("Genre not found");
+      }
+      res.status(200).json(movieTitle);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
 
 //Creating GET(http)Request/Route returns Json object of details of Director (CRUD: READ)
-app.get(passport.authenticate("jwt", { session: false }), (req, res) => {
+app.get("/movies/directors/:directorName/movies", (req, res) => {
   Movies.findOne({ "Director.Name": req.params.directorName })
     .then((movies) => {
       res.status(200).json(movies.Director);
@@ -134,7 +118,7 @@ app.get(passport.authenticate("jwt", { session: false }), (req, res) => {
     });
 });
 
-app.get(passport.authenticate("jwt", { session: false }), (req, res) => {
+app.get("/movies/directors/:directorName", (req, res) => {
   Movies.find({ "Director.Name": req.params.directorName })
     .select("Title")
     .then((movieTitle) => {
