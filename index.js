@@ -134,7 +134,7 @@ app.get(passport.authenticate("jwt", { session: false }), (req, res) => {
     });
 });
 
-app.get(passport.authenticate("jwt", { session: false }), (req, res) => {
+app.get("/movies/directors/:directorName/movies", (req, res) => {
   Movies.find({ "Director.Name": req.params.directorName })
     .select("Title")
     .then((movieTitle) => {
