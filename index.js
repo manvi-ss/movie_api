@@ -38,7 +38,7 @@ mongoose
 //Creating GET(http)Request at endpoint "/movies" returning JSON objects(return all movies)(CRUD: READ)
 app.get(
   "/movies",
-  passport.authenticate("jwt", { session: false }),
+
   (req, res) => {
     Movies.find()
       .then((movies) => {
@@ -70,7 +70,7 @@ app.get(
 //Creating GET(http)Request at endpoint "/movies/:Title" (get movies by title (CRUD: READ))
 app.get(
   "/movies/:Title",
-  passport.authenticate("jwt", { session: false }),
+
   (req, res) => {
     Movies.findOne({ Title: req.params.Title })
       .then((movies) => {
@@ -90,7 +90,7 @@ app.get(
 //Creating GET(http)Request/Route at endpoint (returnsJson object of Genre name and description (CRUD: READ))
 app.get(
   "/movies/genres/:genreName",
-  passport.authenticate("jwt", { session: false }),
+
   (req, res) => {
     Movies.findOne({ "Genre.Name": req.params.genreName })
       .then((movies) => {
@@ -105,7 +105,7 @@ app.get(
 //return a list of movies by genre
 app.get(
   "/movies/genres/:genreName/movies",
-  passport.authenticate("jwt", { session: false }),
+
   (req, res) => {
     Movies.find({ "Genre.Name": req.params.genreName })
       .select("Title")
@@ -123,39 +123,31 @@ app.get(
 );
 
 //Creating GET(http)Request/Route returns Json object of details of Director (CRUD: READ)
-app.get(
-  "/movies/directors/:directorName",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ "Director.Name": req.params.directorName })
-      .then((movies) => {
-        res.status(200).json(movies.Director);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
+app.get(passport.authenticate("jwt", { session: false }), (req, res) => {
+  Movies.findOne({ "Director.Name": req.params.directorName })
+    .then((movies) => {
+      res.status(200).json(movies.Director);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
 
-app.get(
-  "/movies/directors/:directorName/movies",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.find({ "Director.Name": req.params.directorName })
-      .select("Title")
-      .then((movieTitle) => {
-        if (movieTitle.length === 0) {
-          return res.status(400).send("No movies found");
-        }
-        res.status(200).json(movieTitle);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
+app.get(passport.authenticate("jwt", { session: false }), (req, res) => {
+  Movies.find({ "Director.Name": req.params.directorName })
+    .select("Title")
+    .then((movieTitle) => {
+      if (movieTitle.length === 0) {
+        return res.status(400).send("No movies found");
+      }
+      res.status(200).json(movieTitle);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
 
 //Creating GET(http)Request at endpoint "/users/:Username" (get user by Username (CRUD: READ))
 app.get(
