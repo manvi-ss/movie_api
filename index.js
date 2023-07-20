@@ -180,7 +180,7 @@ app.get(
 
 //Allow new users to register POST(http)/ (CRUD: CREATE)
 app.post(
-  "/users",
+  "/signup",
   [
     check("Username", "Username is required").isLength({ min: 5 }), //minimum value of 5 characters are allowed
     check(
