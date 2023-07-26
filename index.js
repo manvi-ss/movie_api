@@ -334,7 +334,7 @@ app.delete(
         if (!user) {
           res.status(400).send(req.params.Username + "was not found");
         } else {
-          res.status(204).send(req.params.Username + "was deleted.");
+          res.status(200).send(req.params.Username + "was deleted.");
         }
       })
       .catch((err) => {
