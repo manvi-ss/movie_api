@@ -25,8 +25,8 @@ This project is a backend application developed using Node.js and Express. It se
 
 ## App Details
 
-[App is hosted on Render, Click here](https://movie-api-movieflix.onrender.com)
-[Checkout the App Endpoints here!](https://movie-api-movieflix.onrender.com/documentation)
+- [App is hosted on Render, Click here](https://movie-api-movieflix.onrender.com)
+- [Checkout the App Endpoints here!](https://movie-api-movieflix.onrender.com/documentation)
 
 ## Dependencies
 
